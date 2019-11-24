@@ -11,7 +11,7 @@ def scrape():
 	
 	browser.visit(url)
 
-	soup = BeautifulSoup(browser.html)
+	soup = BeautifulSoup(browser.html, "html.parser")
 	list = soup.find_all('li', class_='slide')
 	data1 = []
 	for li in list:
@@ -21,31 +21,27 @@ def scrape():
 
 	url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
 	browser.visit(url)
-	
-	soup = BeautifulSoup(browser.html)
+
+	soup = BeautifulSoup(browser.html, "html.parser")
 	foot = soup.find('footer')
 
 	link = foot.find('a')['data-fancybox-href']
-	featured_image_url = 'jpl.nasa.gov' + link
-	featured_image_url
-
-	link = foot.find('a')['data-fancybox-href']
-	featured_image_url = 'jpl.nasa.gov' + link
+	featured_image_url = 'https://www.jpl.nasa.gov' + link
 
 	url = 'https://twitter.com/marswxreport?lang=en'
 	browser.visit(url)
-	soup = BeautifulSoup(browser.html)
+	soup = BeautifulSoup(browser.html, "html.parser")
 
 	tweet = soup.find('p', class_='TweetTextSize TweetTextSize--normal js-tweet-text tweet-text').contents[0]
 
 	table = pd.read_html('https://space-facts.com/mars/')[0]
 
-	tableHTML = table.to_html()
+	tableHTML = table.to_html(index=False)
 
 	url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
 	browser.visit(url)
 
-	soup = BeautifulSoup(browser.html)
+	soup = BeautifulSoup(browser.html, "html.parser")
 
 	descriptions = soup.find_all('div', class_='description')
 
@@ -53,7 +49,7 @@ def scrape():
 
 	for desc in descriptions:
 	    browser.visit(url)
-	    soup = BeautifulSoup(browser.html)
+	    soup = BeautifulSoup(browser.html, "html.parser")
 	    text = desc.find('h3').contents[0]
 	    browser.click_link_by_partial_text(text)
 	    soup = BeautifulSoup(browser.html)
